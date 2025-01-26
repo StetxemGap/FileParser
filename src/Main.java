@@ -85,9 +85,8 @@ public class Main {
     }
 
     public static void writeInFile(ArrayList<String> lines, String filename){
-        System.out.println(filename);
         try {
-            FileWriter fileWriter = new FileWriter(filename);
+            FileWriter fileWriter = new FileWriter(filename, optionA);
             for (String line : lines) {
                 fileWriter.write(line + "\n");
                 fileWriter.flush();
@@ -109,13 +108,13 @@ public class Main {
                         System.exit(1);
                     }
                     if (resultPath.charAt(resultPath.length() - 1) != '/') {resultPath += '/';}
-                    System.out.println("Путь для результатов: " + resultPath);
+                    System.out.println("Путь: " + resultPath);
                     break;
                 case "-p":
                     optionP = true;
                     System.out.println("Опция p применена");
                     resultPrefix = args[++i];
-                    System.out.println("Префикс для файлов с результатом: " + resultPrefix);
+                    System.out.println("Префикс: " + resultPrefix);
                     break;
                 case "-a":
                     optionA = true;
