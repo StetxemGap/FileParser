@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
@@ -32,16 +29,24 @@ public class Main {
                 }
             }
 
+            String filename = "";
+
+            if (optionO) {filename = resultPath;}
+            if (optionP) {filename += resultPrefix;}
+
             if (!integers.isEmpty()) {
-                fileCreator("integers.txt");
+                fileCreator(filename + "integers.txt");
+                writeInFile(integers, filename + "integers.txt");
             }
 
             if (!floats.isEmpty()) {
-                fileCreator("floats.txt");
+                fileCreator(filename + "floats.txt");
+                writeInFile(floats, filename + "floats.txt");
             }
 
             if (!strings.isEmpty()) {
-                fileCreator("strings.txt");
+                fileCreator(filename + "strings.txt");
+                writeInFile(strings, filename + "strings.txt");
             }
 
         } catch (IOException e) {
@@ -67,32 +72,43 @@ public class Main {
         }
     }
 
-    public static void fileCreator(String filename) throws IOException {
-        if (optionP) {filename = resultPrefix + filename;}
-        if (optionO) {filename = resultPath + filename;}
-
+    public static void fileCreator(String filename) {
         try {
             File file = new File(filename);
             if (file.createNewFile()) {
-                System.out.println("Файл" + filename + "создан");
-            } else {
-                System.out.println("Файл" + filename + "уже существует");
+                System.out.println("Файл " + filename + " создан");
             }
         } catch (IOException e) {
-            System.out.println("Ошибка при создании файла");
-            e.printStackTrace();
+            System.err.println("Ошибка при создании файла: " + e.getMessage());
         }
 
     }
 
+    public static void writeInFile(ArrayList<String> lines, String filename){
+        System.out.println(filename);
+        try {
+            FileWriter fileWriter = new FileWriter(filename);
+            for (String line : lines) {
+                fileWriter.write(line + "\n");
+                fileWriter.flush();
+            }
+        } catch (IOException e) {
+            System.err.println("Ошибка при открытии файла: " + e.getMessage());
+        }
+    }
+
     public static void checkOptions(String[] args){
-        System.out.println("\n*************************** Анализ операций ***************************\n");
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-o":
                     optionO = true;
                     System.out.println("Опция о применена");
                     resultPath = args[++i];
+                    if (resultPath.charAt(0) == '-') {
+                        System.err.println("Ошибка: после опции -o должен быть введен путь");
+                        System.exit(1);
+                    }
+                    if (resultPath.charAt(resultPath.length() - 1) != '/') {resultPath += '/';}
                     System.out.println("Путь для результатов: " + resultPath);
                     break;
                 case "-p":
@@ -114,8 +130,8 @@ public class Main {
                     System.out.println("Опция f применена");
                     break;
                 default:
-                    System.out.println("Несуществующая опция: " + args[i]);
-                    break;
+                    System.err.println("Несуществующая опция: " + args[i]);
+                    System.exit(1);
             }
         }
     }
