@@ -1,0 +1,11 @@
+Lorem ipsum dolor sit amet
+45
+Пример
+consectetur adipiscing
+0.22
+тестовое задание
+15
+Нормальная форма числа с плавающей запятой
+Long
+133
+0.37

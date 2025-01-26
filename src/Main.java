@@ -8,29 +8,32 @@ public class Main {
     private static boolean optionS = false; //краткая статистика(сколько было добавлено в каждый из выходных файлов)
     private static boolean optionF = false; //полная статистика(числа: min, max, sum, mu; строки: min, max)
 
-    private static String inputFile;
+    private static ArrayList<String> inputFiles = new ArrayList<>();
     private static String resultPath;
     private static String resultPrefix;
 
     public static void main(String[] args) {
         checkOptions(args);
-        if (inputFile == null) {
+        if (inputFiles.isEmpty()) {
             System.out.println("Ошибка: не указаны входные файлы");
             return;
         }
         ArrayList<String> integers = new ArrayList<>();
         ArrayList<String> floats = new ArrayList<>();
         ArrayList<String> strings = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/in1.txt"))) {
-            String line;
+        try {
+            for (String file : inputFiles) {
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                String line;
 
-            while ((line = bufferedReader.readLine()) != null) {
-                if (isInteger(line)) {
-                    integers.add(line);
-                } else if (isFloat(line)) {
-                    floats.add(line);
-                } else {
-                    strings.add(line);
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (isInteger(line)) {
+                        integers.add(line);
+                    } else if (isFloat(line)) {
+                        floats.add(line);
+                    } else {
+                        strings.add(line);
+                    }
                 }
             }
 
@@ -208,7 +211,7 @@ public class Main {
                     break;
                 default:
                     if (args[i].length() > 4 && args[i].substring(args[i].length() - 4) .equals(".txt")) {
-                        inputFile = args[i];
+                        inputFiles.add(args[i]);
                     } else {
                         System.err.println("Несуществующая опция: " + args[i]);
                         System.exit(1);
