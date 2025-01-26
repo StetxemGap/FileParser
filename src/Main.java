@@ -184,7 +184,7 @@ public class Main {
                     optionO = true;
                     System.out.println("Опция о применена");
                     resultPath = args[++i];
-                    if (resultPath.charAt(0) == '-') {
+                    if (resultPath.charAt(0) == '-' || args[i].substring(args[i].length() - 4) .equals(".txt")) {
                         System.err.println("Ошибка: после опции -o должен быть введен путь");
                         System.exit(1);
                     }
@@ -195,6 +195,10 @@ public class Main {
                     optionP = true;
                     System.out.println("Опция p применена");
                     resultPrefix = args[++i];
+                    if (resultPrefix.charAt(0) == '-' || args[i].substring(args[i].length() - 4) .equals(".txt")) {
+                        System.err.println("Ошибка: после опции -p должен быть введен префикс");
+                        System.exit(1);
+                    }
                     System.out.println("Префикс: " + resultPrefix);
                     break;
                 case "-a":
